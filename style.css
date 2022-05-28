@@ -1,0 +1,128 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+
+.redFlag{
+    /* height: 150px; */
+    width: 60px;
+ 
+}
+
+
+
+#premiumEconomy{
+    background-image:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0,0,0,0.2)), url('images/emirates-premium-economy-cabin-view-w1920x480.webp');
+    background-size: cover;
+    background-position:center;
+    height: 60vh;
+    position: relative;
+}
+
+
+.fly-better{
+    right: 3vw;
+    top: 20px;
+}
+
+.input{
+    width: 100%;
+    height: 60px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.offers{
+    width: 140px !important;
+    height: 140px !important;
+    /* border: 1px solid gainsboro; */
+}
+#joinEmirates{
+    background-image: url(images/newback.jpg);
+    background-position: bottom;
+}
+#secondSection{
+    background-image: url(images/seafood.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.covid{
+    background-image: url(images/econo.jpg);
+    background-size: cover;
+    background-position: bottom;
+    /* height: 500px; */
+    
+}
+.dubai{
+    background-image: url(images/canal-sunset.webp);
+    background-size: cover;
+    background-position: bottom;
+    
+    
+}
+.destination{
+    background-image: url(images/tower-bridge.webp);
+    background-size: cover;
+    background-position: bottom;
+    
+    
+}
+.vw-40{
+    width: 60vw;
+    align-self: center;
+}
+.marina{
+    background:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0,0,0,0.5)), url(images/dubai-marina-cruise-tour-w1920x480.webp);
+    background-size: cover;
+    height: 60vh;
+    background-position: center;
+    
+}
+
+.subscriber{
+    background:  linear-gradient(rgba(0, 0, 0, 0.5), rgba(0,0,0,0.5)), url(images/happy-family-walking-together-on-sunset-pb-w1920x480.jpg);
+    background-size: cover;
+    height: 60vh;
+    background-position: center;
+    
+}
+.round-rex{
+    height: 170px;
+    width: 170px;
+    border-radius: 50%;
+}
+.text-rex{
+    width: 170px;
+    
+}
+.about-us{
+    background-image: url(images/airportNight.webp);
+    background-size: cover;
+    background-position: center;
+}
+.our-people{
+    background-image: url(images/ourpeople.webp);
+    background-size: cover;
+    background-position: center;
+}
+.our-planet{
+    background-image: url(images/ourplanet.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.our-communities{
+    background-image: url(images/ourcommunities.webp);
+    background-size: cover;
+    background-position: center;
+}
+.list-none{
+    list-style-type: none;
+}
+.u-0{
+    text-decoration: none;
+
+}

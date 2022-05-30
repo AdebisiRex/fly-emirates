@@ -126,3 +126,8 @@ body{
     text-decoration: none;
 
 }
+#bodyImg{
+    background-image: url("images/treebackground.webp");
+    background-size:cover ;
+    background-position: center;
+}

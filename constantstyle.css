@@ -27,6 +27,11 @@
     border-bottom: 3px solid darkred !important;
     font-weight: bold;
 }
+.seleT{
+    color: black !important;
+    border-bottom: 3px solid darkred !important;
+    font-weight: bold;
+}
 .sh-hover::selection{
     color: black;
     border-bottom: 3px solid darkred;

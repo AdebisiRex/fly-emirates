@@ -160,41 +160,43 @@
 
             <div class="container bg-white shadow mb-3">
                 <div class="row ">
-                    <div class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"> <i class="fa fa-plane" aria-hidden="true"></i> <br> Search Flights</div>
-                    <div class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"> <i class="fa fa-tag" aria-hidden="true"></i> <br> Manage Booking/Checkin</div>
-                    <div class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"><i class="fa fa-road" aria-hidden="true"></i> <br> What's on your flight</div>
-                    <div class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"><i class="fa fa-times-circle" aria-hidden="true"></i> <br> Flight Status</div>
+                    <div id="sf" onclick="browseNav(4)" class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"> <i class="fa fa-plane" aria-hidden="true"></i> <br> Search Flights</div>
+                    <div id="mc" onclick="browseNav(1)" class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"> <i class="fa fa-tag" aria-hidden="true"></i> <br> Manage Booking/Checkin</div>
+                    <div id="wo" onclick="browseNav(2)" class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"><i class="fa fa-road" aria-hidden="true"></i> <br> What's on your flight</div>
+                    <div id="fs" onclick="browseNav(3)" class="col-md-3 col-6 border text-secondary fw-thin p-3 text-center sh-hover"><i class="fa fa-times-circle" aria-hidden="true"></i> <br> Flight Status</div>
                 </div>
-                <div class="d-none d-md-block">
+                <div id="flip" class="d-none d-md-block">
                     <div id="searchFlights">
                         <!-- on load this div is displayed, when the required information is filled and Continue is clicked the afterContinue becomes displayed -->
-                        <div id="beforeContinue" class="my-5 pb-4">
-                            <div class="text-danger mb-1 text-end">
-                                <small > <ins> Advanced search: multi-city, promo codes, partner airlines  ></ins></small>
-                            </div>
-                            <div class="row">
+                    </div>
+                    <div id="beforeContinue" class="my-5 pb-4 d-none">
+                        <div class="text-danger mb-1 text-end">
+                            <small > <ins> Advanced search: multi-city, promo codes, partner airlines  ></ins></small>
+                        </div>
+                        <div class="row my-3 pb-4">
                                 
-                                <div class="col-5">
-                                    <input  class="sh-hover p-3 input" type="text" placeholder="Departure Airport" id="depart">
-                                </div>
-                                <div class="col-5">
-                                    <input class="sh-hover p-3 input" type="text" placeholder="Arrival Airport" id="arrive">
-                                </div>
-                                <div class="col-2">
-                                    <button class="sh-hover btn button100 btn-danger fw-bold  sh-hover ">Continue</button>
-                                </div>
+                            <div class="col-5">
+                                <select onclick="listDAirp()" class="sh-hover p-3 input" name="" id="depAirpoty"></select>
+                                
+                            </div>
+                            <div class="col-5">
+                                <select onclick="listArrivalAirp()" class="sh-hover p-3 input" name="" id="arriveAirpoty"></select>
+                            </div>
+                            <div class="col-2">
+                                <button onclick="searchContinue()" class="sh-hover btn button100 btn-danger fw-bold  sh-hover ">Continue</button>
                             </div>
                         </div>
-                        <div id="afterContinue" class="my-5 pb-4  d-none"  >
+                    </div>
+                    <div id="afterContinue" class="my-5 pb-4  d-none"  >
                             <div class="text-danger mb-1 text-end">
                                 <small > <ins> Advanced search: multi-city, promo codes, partner airlines  ></ins></small>
                             </div>
                             <div class="row g-3">
                                 <div class="col-4">
-                                    <input class="sh-hover p-3 input"    type="text" placeholder="Departure Airport" id="depart">
+                                    <select class="sh-hover p-3 input" name="" id="depAirpot"></select>
                                 </div>
                                 <div class="col-4">
-                                    <input class="sh-hover p-3 input" type="text" placeholder="Arrival Airport" id="arrive">
+                                    <select onclick="listDAirp()" class="sh-hover p-3 input" name="" id="arriveAirpot"></select>
                                 </div>
                                 <div class="col-4">
                                     <input class="sh-hover p-3 input" type="text" placeholder="Departing - Returning" id="arrive">
@@ -212,8 +214,8 @@
                                 </div>
                             </div>
 
-                        </div>
                     </div>
+                    
 
                     <div id="manageBooking" class="my-5 pb-4 d-none">
                         
@@ -274,7 +276,7 @@
                                 </div>
                             </div>
 
-                            <div id="flightNumberDisplay" class="row">
+                            <div  id="flightNumberDisplay" class="row mt-3">
                                 <div class="col-5">
                                     <input class="sh-hover p-3 input" type="text" placeholder="Flight Number" id="flightNumber">
                                 </div>
@@ -292,7 +294,7 @@
                     </div>
 
                     <div id="flightStatus" class=" my-5 pb-4 d-none">
-                        <div id="routeStatus">
+                        <div id="routeStatus" class=" my-5 pb-4">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="d-flex g-3">
@@ -567,7 +569,7 @@
             </div>
         </section>
 
-        <section id="footing" class="py-5 mx-auto bg-dark bg-gradient ">
+        <footer id="footing" class="py-5 mx-auto bg-dark bg-gradient ">
             <div class="container">
                 <div class="row">
                     <div class="col-3">
@@ -667,15 +669,69 @@
                         </ul>
                     </div>
                 </div>
+
             </div>
             <hr>
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-4">
+                        <h5 class="text-white trebuchet ">Subscribe to our special offers</h5>
+                        <p class="text-light fs-6 ">Save with our latest fares and offers</p>
+                        <p> <a class="text-light fs-6" href="">Unsubscribe or change your prefereences</a></p>
+                        <input class="p-1" type="enail" placeholder="Email address" name="" id=""> <button class="btn p-1 btn-sm btn-outline-light">Subscribe </button> <br>
+                        <div class="w-75 mt-3">
+                            <small class="text-secondary ">For details on how we use your information, please see our <ins>privacy policy</ins></small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-white trebuchet ">Emirate App</h5>
+                        <p class="mt-3 text-light fs-6 ">Book and manage your flight on the go</p>
+                        <img class="my-3" src="images/apple-en.svg" alt=""> <img class="my-3" src="images/google-en.svg" alt="">
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-white trebuchet ">Connect with us</h5>
+                        <p class="mt-3 text-light fs-6 ">Share your Emirates expereience</p>
+                        <img src="images/apple-en.svg" alt=""> <img src="images/google-en.svg" alt="">
+                    </div>
+                    
+                </div>
+                
+
+            </div>
+            <hr>
+            <div class="container py-3">
+                <div class="row">
+                    <div class="col-4">
+                        <h5 class="text-white trebuchet ">Subscribe to our special offers</h5>
+                        <p class="text-light fs-6 ">Save with our latest fares and offers</p>
+                        <p> <a class="text-light fs-6" href="">Unsubscribe or change your prefereences</a></p>
+                        <input class="p-1" type="enail" placeholder="Email address" name="" id=""> <button class="btn p-1 btn-sm btn-outline-light">Subscribe </button> <br>
+                        <div class="w-75 mt-3">
+                            <small class="text-secondary ">For details on how we use your information, please see our <ins>privacy policy</ins></small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-white trebuchet ">Emirate App</h5>
+                        <p class="mt-3 text-light fs-6 ">Book and manage your flight on the go</p>
+                        <img class="my-3" src="images/apple-en.svg" alt=""> <img class="my-3" src="images/google-en.svg" alt="">
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-white trebuchet ">Connect with us</h5>
+                        <p class="mt-3 text-light fs-6 ">Share your Emirates expereience</p>
+                        <img src="images/apple-en.svg" alt=""> <img src="images/google-en.svg" alt="">
+                    </div>
+                    
+                </div>
+                
+
+            </div> 
             
 
 
-        </section>
+        </footer>
 
         
-
+        <script src="script.js"></script>
         <script src="javascript.js"></script>
     </body>
 </html>

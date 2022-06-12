@@ -4994,7 +4994,7 @@ function listDAirp(){
     document.getElementById('depAirpoty').innerHTML =  disp
     document.getElementById('depAirpot').innerHTML =  disp
 }
-listDAirp()
+// listDAirp()
 
 
 
@@ -5005,4 +5005,49 @@ function listArrivalAirp(){
     document.getElementById('arriveAirpoty').innerHTML =  disp
     document.getElementById('arriveAirpot').innerHTML =  disp
 }
-listArrivalAirp()
+// listArrivalAirp()
+
+
+function fun(){
+    for(i in flights){
+        disp += `<div class="border">
+                <div class="row"><div class="col-9"><small class="my-1 fw-bold">${flights[i].arrival.airport}</small><br><small> ${flights[i].arrival.scheduled}</small></div><div class= "bg-info col-1"> </div><div class= " bg-danger col-2"> M</div></div></div>`
+    }
+    
+    document.getElementById('oldSoldier').innerHTML =  disp
+}
+fun()
+
+function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
+  getLocation()
+  
+  async function showPosition(position) {
+  
+    const AIRPORTS = await fetch(`https://airlabs.co/api/v9/nearby?lat=6.4913&lng=3.3849&distance=20000&api_key=6f0d6f8f-295b-46b4-a595-6388f121a0c3`);
+
+
+    // https://airlabs.co/api/v9/nearby?lat=6.4913&lng=3.3849&distance=2000&api_key=6f0d6f8f-295b-46b4-a595-6388f121a0c3
+
+    const list = await AIRPORTS.json();
+
+
+    for(i in list){
+        disp += `<div class="dropdown-item border" href="#"><div class="row"><div class="col-9"><small class="my-1 fw-bold">${list.response.airports[i]}</small><br><small> Hell</small></div><div class= "bg-info col-1"> MM</div><div class= " bg-danger col-2"> M</div></div></div>`
+    }
+    
+    document.getElementById('demo').innerHTML =  disp
+  
+  
+      
+  
+    //   x.innerHTML = list.response.airports[0].name
+  
+  //   x.innerHTML = "Latitude: " + position.coords.latitude +
+  //   "<br>Longitude: " + position.coords.longitude;
+  }

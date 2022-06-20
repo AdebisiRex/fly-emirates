@@ -4987,25 +4987,27 @@ const flights = [
     ]
 
 disp = "";
-function listDAirp(){
+function listDepAirport(){
+
     for(i in flights){
-        disp += "<option> <h5>" + flights[i].departure.airport + "</h5> <br> <p>"+ flights[i].departure.scheduled + "</p></option>"
+        disp += "<option>"+ flights[i].departure.airport +  "</option>"
     }
-    document.getElementById('depAirpoty').innerHTML =  disp
-    document.getElementById('depAirpot').innerHTML =  disp
+    document.getElementById('depAirport').innerHTML =  disp
+    
 }
-// listDAirp()
+listDepAirport();
 
 
 
-function listArrivalAirp(){
+function listArrAirport(){
     for(i in flights){
         disp += "<option> <h5>" + flights[i].arrival.airport + "</h5> <br> <p>"+ flights[i].arrival.scheduled + "</p></option>"
     }
-    document.getElementById('arriveAirpoty').innerHTML =  disp
-    document.getElementById('arriveAirpot').innerHTML =  disp
+    // document.getElementById('arriveAirpoty').innerHTML =  disp
+    document.getElementById('arrAirport').innerHTML =  disp
 }
-// listArrivalAirp()
+listArrAirport()
+
 
 
 function fun(){
@@ -5016,7 +5018,7 @@ function fun(){
     
     document.getElementById('oldSoldier').innerHTML =  disp
 }
-fun()
+
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -5025,7 +5027,7 @@ function getLocation() {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
   }
-  getLocation()
+//   getLocation()
   
   async function showPosition(position) {
   

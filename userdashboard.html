@@ -153,7 +153,7 @@
                 <img class="fly-better position-absolute" width="150px" src="images/emirates-fly-better-white.svg" alt="">
             </div>
 
-            <div class="container bg-white shadow mb-3">
+            <div class="container bg-white shadow pb-3 mb-3">
                 
                 <div id="flip" class="mb-5">
                     <div id="searchFlights">
@@ -173,23 +173,38 @@
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-4">
-                                        <select class="sh-hover p-3 input" name="" id="depAirpot"></select>
+                                        <label for="depAirport">Departure Airport </label>
+                                        <select class="sh-hover p-3 form-control custom-select" name="" id="depAirport">
+                                        </select>
                                     </div>
                                     <div class="col-4">
-                                        <select class="sh-hover p-3 input" name="" id="arriveAirpot"></select>
+                                        <label for="arrAirport">Arrival Airport </label>
+                                        <select class="sh-hover p-3 form-control" name="" id="arrAirport"></select>
                                     </div>
                                     <div class="col-4">
-                                        <input class="sh-hover p-3 input" type="text" placeholder="Departing - Returning" id="arrive">
-    
+                                        <label for="depDate">Departure Date </label>
+                                        <input class=" form-control sh-hover p-3" type="date"  id="depDate">
+                                            
                                     </div>
                                     <div class="col-4">
-                                        <input class="sh-hover p-3 input" type="number" placeholder="Passenger" id="arrive">
+                                        <label for="arrDate">Arrival Date </label>
+                                        <input class="form-control sh-hover p-3" type="date"  id="arrDate">
                                     </div>
                                     <div class="col-4">
-                                        <input class="sh-hover p-3 input" type="text" placeholder="Class" id="arrive">
+                                        <label for="nOPass">Number of Passengers</label>
+                                        <input class="sh-hover p-3 form-control" type="number" placeholder="Passengers" id="nOPass">
                                     </div>
                                     <div class="col-4">
-                                        <button class="sh-hover btn button100 btn-danger fw-bold px-5 p-2 sh-hover ">Book Flight</button>
+                                        <label for="coach">Class </label>
+                                        <select class="sh-hover p-3 form-control custom-select" id="coach">
+                                            <option  value="Economy">Economy Class</option>
+                                            <option value="Business">Business Class</option>
+                                            <option value="First">First Class</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <button onclick="buyTicket()" class="sh-hover btn button100 btn-danger fw-bold px-5 p-2 sh-hover ">Book Flight</button>
                                         </i>
                                     </div>
                                 </div>
@@ -204,20 +219,18 @@
                               </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                              <div class="accordion-body">
-
+                              <div id="ticketsDisplay" class="accordion-body">
                                 You haven't booked any tickets recently 
-                                  
-                                
                               </div>
                             </div>
-                          </div>
+                        </div>
                     </div>
 
                     
                     
 
                 </div>
+            </div>
 
 
             <div class="overflow-auto">
@@ -477,8 +490,8 @@
             const auth = getAuth();
             const database = getDatabase();
 
-            // const user = auth.currentUser;
-            // const provider = new GoogleAuthProvider();
+            const Cruser = auth.currentUser;
+           
 
             let currentEmail; 
             let currentUID;
@@ -499,30 +512,63 @@
 
             onValue(dbRef, function(snapshot){
                 userArray = snapshot.val();
-            
-                console.log(currentUID, 'uid');
-                console.log(userArray, 'userArray');
-           
-                if(userArray[`${currentUID}`])
-                {
                     thisUserArray =  userArray[`${currentUID}`];
-
-
-                    console.log(thisUserArray, 'thisuser');
+                    // console.log(thisUserArray, 'thisuser');
                     thisUserEmail.innerText = thisUserArray.email;
                     fullName.innerText = `${thisUserArray.name.firstName} ${thisUserArray.name.lastName}`;
-                }else{
-                    console.log("Rex don't know shit")
-                }
+               
             })
             
+
+            //code for tickets
+            let ticketsArray;
+            let nextIndex;
+            let currentUserTickets;
+            let userTicketsDB = ref(database, 'userTickets');
+            onValue(userTicketsDB, function(snapshot){
+                ticketsArray = snapshot.val();
+                if(ticketsArray){
+                    currentUserTickets = ticketsArray[`${currentUID}`]
+                    nextIndex = currentUserTickets.length;
+                    displayTickets(currentUserTickets);
+                }else{
+                    nextIndex= 0;
+                }
+
+            })
+
+
+            window.buyTicket=()=>{
+                let ticketRef = ref(database, `userTickets/${currentUID}/${nextIndex}`);
+                let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': nOPass.value,  'approval': false}
+                set(ticketRef, ticketObj)
+            }
+            
+            function displayTickets(currentUserTickets){
+                let display = `<table class="table table-hover table-striped table-bordered">
+                                <thead>
+                                    <tr> <th> Departure </th> <th> Arrival</th> <th> D-Date</th><th> Arr Date</th><th> #Passengers</th><th>Class</th><th> Approval Status</th><th> Delete</th> </tr></thead><tbody>    `;
+                currentUserTickets.map((ticket, i)=>{
+                    display += `<tr><td> ${ticket.from}</td><td>${ticket.to}</td><td>${ticket.departureDate}</td><td>${ticket.arrivalDate}</td><td>${ticket.passengers}</td><td>${ticket.coach}</td><td> <i> pending...</i></td><td onclick = 'deleteTicket(${i})'>delete</td></tr>`
+                })
+                display += `</tbody></table>`;
+                ticketsDisplay.innerHTML  = display;
+            }
+           
+            window.deleteTicket=(index)=>{
+                currentUserTickets.splice(index,1)
+                let ticketRef = ref(database, `userTickets/${currentUID}`);
+                
+                set(ticketRef, currentUserTickets)
+            }
+
 
 
 
 
         </script>
         
-        <!-- <script src="javascript.js"></script> -->
+        <script src="javascript.js"></script>
         <!-- <script src="script.js"></script> -->
 
         <!-- <script src="trial.js"></script> -->

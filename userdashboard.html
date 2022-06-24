@@ -167,40 +167,53 @@
                                 <div class="text-danger mb-1 text-end">
                                     <small > <ins> Advanced search: multi-city, promo codes, partner airlines  ></ins></small>
                                 </div>
-                                <div class="row g-3">
-                                    <div class="col-4">
+                                <div class="row g-2">
+                                    <div class="col-md-4 col-12">
                                         <label for="depAirport">Departure Airport </label>
                                         <select class="sh-hover p-3 form-control custom-select" name="" id="depAirport">
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4 col-12">
                                         <label for="arrAirport">Arrival Airport </label>
                                         <select class="sh-hover p-3 form-control" name="" id="arrAirport"></select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4 col-12">
                                         <label for="depDate">Departure Date </label>
                                         <input class=" form-control sh-hover p-3" type="date"  id="depDate">
                                             
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4 col-12">
                                         <label for="arrDate">Arrival Date </label>
                                         <input class="form-control sh-hover p-3" type="date"  id="arrDate">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4 col-12">
                                         <label for="nOPass">Number of Passengers</label>
-                                        <input class="sh-hover p-3 form-control" type="number" placeholder="Adult" id="nOPass">       
+                                        <div class="row g-1">
+                                            <div class="col-4">
+                                                <input class="sh-hover p-3 form-control" type="number" placeholder="Adult" min="0" max="15" id="adult">       
+    
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="sh-hover p-3 form-control" type="number" placeholder="Children" min="0" max="7" id="children">       
+    
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="sh-hover p-3 form-control" type="number" placeholder="Toddler" min="0" max="3" id="toddler">       
+    
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4 col-12">
                                         <label for="coach">Class </label>
                                         <select class="sh-hover p-3 form-control custom-select" id="coach">
-                                            <option  value="Economy">Economy Class</option>
-                                            <option value="Business">Business Class</option>
-                                            <option value="First">First Class</option>
+                                            <option  value="Economy Class">Economy Class</option>
+                                            <option value="Business Class">Business Class</option>
+                                            <option value="First Class">First Class</option>
 
                                         </select>
                                     </div>
-                                    <div class="col-4">
-                                        <button onclick="buyTicket()" class="sh-hover btn button100 btn-danger fw-bold px-5 p-2 sh-hover ">Book Flight</button>
+                                    <div class="col-md-4 col-12">
+                                        <button onclick="ticket()" data-bs-toggle="modal" data-bs-target="#confirmModal"  class="sh-hover btn button100 btn-danger fw-bold px-5 p-2 sh-hover ">Book Flight</button>
                                         </i>
                                     </div>
                                 </div>
@@ -208,6 +221,60 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="confirmModalLabel">Confirm Ticket details </h5>
+                                  
+                                </div>
+                                <div class="modal-body">
+                                  <div id="ticketDetails" class="text-center">
+
+                                  </div>
+                                  <div id="ticketPrice" class="text-center text-danger display-2 fw-bold" > 
+
+                                  </div>
+                                  
+                                </div>
+                                <div class="modal-footer">
+                                  <button onclick="payWithPaystack()" id="saveChanges" class="btn btn-dark" data-bs-dismiss="modal">Proceed to Payment</button>
+                                  
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="detModal" tabindex="-1" aria-labelledby="detModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="detModalLabel">Booked Ticket details </h5>
+                                  
+                                </div>
+                                <div class="modal-body">
+                                  <div id="bookingDetails">
+
+
+
+                                  </div>
+                                  
+                                  
+                                </div>
+                                <div id="bookingFooter" class="modal-footer">
+                                  <button class="btn btn-dark" data-bs-dismiss="modal">Dismiss</button>
+                                  
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingTwo">
                               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -462,7 +529,7 @@
 
             changeImage()
         </script>
-
+        <script src="https://js.paystack.co/v1/inline.js"></script>
         <script type="module">
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
@@ -493,7 +560,7 @@
             let currentUID;
 
             onAuthStateChanged(auth, (user)=>{
-                console.log(user)
+                // console.log(user)
                 currentEmail = user.email;
                 currentUID = user.uid;
             })
@@ -523,8 +590,10 @@
             let userTicketsDB = ref(database, 'userTickets');
             onValue(userTicketsDB, function(snapshot){
                 ticketsArray = snapshot.val();
-                if(ticketsArray){
+                console.log(ticketsArray, "ticketsArray")
+                if(ticketsArray[`${currentUID}`]){
                     currentUserTickets = ticketsArray[`${currentUID}`]
+                    console.log(currentUserTickets, 'currentUserTickets');
                     nextIndex = currentUserTickets.length;
                     displayTickets(currentUserTickets);
                 }else{
@@ -533,19 +602,78 @@
 
             })
 
+            let n;
+            let prices;
+            let priceREF = ref(database, 'prices')
+            onValue(priceREF, function(snapshot){
+                prices = snapshot.val();
+                if(prices){
+                    n = prices.length;
+                }else{
+                    n = 0  
+                }
+            })
 
-            window.buyTicket=()=>{
-                let ticketRef = ref(database, `userTickets/${currentUID}/${nextIndex}`);
-                let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': nOPass.value,  'approval': false}
-                set(ticketRef, ticketObj)
+            let noAdult;
+            let noChildren;
+            let noToddler;
+            let numberOfPassenger;
+            let totalTicketPrice;
+           
+            function buyTicket(){
+                noAdult = Number(adult.value);
+                noChildren = Number(children.value);
+                noToddler = Number(toddler.value)
+                numberOfPassenger = noAdult + noChildren + noToddler;
+                let date = new Date().toLocaleDateString();
+                
+
+                if(coach.value == 'First Class'){
+
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 3;
+                }else if(coach.value == 'Business Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 2;
+
+                }else if(coach.value == 'Economy Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500));
+
+                }
+
             }
+
+
+
+            window.ticket=()=>{
+                noAdult = Number(adult.value);
+                noChildren = Number(children.value);
+                noToddler = Number(toddler.value)
+                numberOfPassenger = noAdult + noChildren + noToddler;
+                
+
+                if(coach.value == 'First Class'){
+
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 3;
+                }else if(coach.value == 'Business Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 2;
+
+                }else if(coach.value == 'Economy Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500));
+
+                }
+
+                document.getElementById('ticketDetails').innerHTML = `You're about to purchase <strong> ${numberOfPassenger}</strong> <strong> ${coach.value}</strong> ticket(s) for available flights from <strong> ${depAirport.value}</strong>  to <strong> ${arrAirport.value}</strong> between <strong> ${depDate.value}</strong> and <strong> ${arrDate.value}</strong>`; 
+
+                document.getElementById('ticketPrice').innerHTML = `<i class="fa fa-dollar" aria-hidden="true"></i>${totalTicketPrice}`;
             
+                buyTicket()
+            }
+                
             function displayTickets(currentUserTickets){
-                let display = `<table class="table table-hover table-striped table-bordered">
+                let display = `<table class="table table-hover table-striped">
                                 <thead>
-                                    <tr> <th> Departure </th> <th> Arrival</th> <th> D-Date</th><th> Arr Date</th><th> #Passengers</th><th>Class</th><th> Approval Status</th><th> Delete</th> </tr></thead><tbody>    `;
+                                    <tr> <th> Departure </th> <th> Destination</th> <th> Departure Date</th><th> Approval Status</th><th><img src="images/bin.png" width="20"></th> </tr></thead><tbody>    `;
                 currentUserTickets.map((ticket, i)=>{
-                    display += `<tr><td> ${ticket.from}</td><td>${ticket.to}</td><td>${ticket.departureDate}</td><td>${ticket.arrivalDate}</td><td>${ticket.passengers}</td><td>${ticket.coach}</td><td> <i> pending...</i></td><td onclick = 'deleteTicket(${i})'>delete</td></tr>`
+                    display += `<tr data-bs-toggle="modal" data-bs-target="#detModal" onclick = "moreDetails(${i})"><td> ${ticket.from}</td><td>${ticket.to}</td><td>${ticket.departureDate}</td><td> <i> pending...</i></td><td onclick = 'deleteTicket(${i})'><img src="images/bin.png" width="20"></td></tr>`
                 })
                 display += `</tbody></table>`;
                 ticketsDisplay.innerHTML  = display;
@@ -558,6 +686,31 @@
                 set(ticketRef, currentUserTickets)
             }
 
+            let detailIndex;
+            window.moreDetails=(d)=>{
+                let det = currentUserTickets[d];
+                detailIndex = d;
+
+                document.getElementById('bookingDetails').innerHTML =  `<table class= "table table-responsive">
+                    <tr><td> Departure Airport:</td><td> ${det.from} </td></tr>
+                    <tr><td> Arrival Airport:</td><td> ${det.to} </td></tr>
+                    <tr><td> Class:</td><td> ${det.coach} </td></tr>
+                    <tr><td> Book:</td><td> ${det.book} </td></tr>
+                    <tr><td> Arrival Date:</td><td> ${det.paymentStatus} </td></tr>
+                    <tr><td> Arrival Date:</td><td> ${det.paymentReference} </td></tr>
+                    <tr><td> Approval Status:</td><td> ${det.approval} </td></tr>
+                    <tr><td> Cost:</td><td> ${ det.cost } </td></tr>
+                    <tr><td> Passengers: (${det.passengers.total})</td><td> Adult: ${det.passengers.adult} Children: ${det.passengers.children} Toddler: ${det.passengers.toddler} </td></tr>
+                    <tr><td> Departure Date:</td><td> ${det.departureDate} </td></tr>
+                    <tr><td> Arrival Date:</td><td> ${det.arrivalDate} </td></tr>
+                </table>` 
+
+                if(det.paymentStatus == "Awaiting Payment"){
+                    document.getElementById('bookingFooter').innerHTML = `<button onclick="prebookedTicketPaystack()" class="btn btn-danger">Proceed To Pay </button><button class="btn btn-dark" data-bs-dismiss="modal">Dismiss</button>`
+                }
+            }
+
+
             window.logout=()=>{
                 if(confirm('Are you sure you want to Logout?')){
                     
@@ -565,6 +718,99 @@
                         location.href = "login.html"
                     })
                 }
+            }
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            ///LINKED PAYSTACK FOR PAYMENTS
+
+            window.prebookedTicketPaystack=()=> {
+                
+                var handler = PaystackPop.setup({
+                    key: 'pk_test_81338c74c32ab94adecbb258dc43be07f645286c', // Replace with your public key
+                    email: currentEmail,
+                    amount: totalTicketPrice * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                    currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+                    ref: `FLY`+ Math.floor((Math.random() * 1000) + 1)+'REX'+Math.floor((Math.random() * 15000) + 1), // Replace with a reference you generated
+                    callback: function(response) {
+                        //this happens after the payment is completed successfully
+                        
+                        var reference = response.reference;
+                        alert('Payment complete! Reference: ' + reference);
+
+                        buyTicket();
+
+                        let ticketRef = ref(database, `userTickets/${currentUID}/${detailIndex}`);
+               
+                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Completed','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
+                        set(ticketRef, ticketObj);
+
+
+                        let priceRef = ref(database, "prices/"+n)
+                        set(proceRef, totalTicketPrice)
+                    // Make an AJAX call to your server with the reference to verify the transaction
+                    },
+                    onClose: function() {
+
+                        buyTicket();
+                        let ticketRef = ref(database, `userTickets/${currentUID}/${detailIndex}`);
+               
+                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Awaiting Payment','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
+                        set(ticketRef, ticketObj);
+
+                    alert('Transaction was not completed, window closed.');
+                    },
+                });
+                handler.openIframe();
+            }
+
+
+
+            window.payWithPaystack=()=> {
+                
+                var handler = PaystackPop.setup({
+                    key: 'pk_test_81338c74c32ab94adecbb258dc43be07f645286c', // Replace with your public key
+                    email: currentEmail,
+                    amount: totalTicketPrice * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                    currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+                    ref: `FLY`+ Math.floor((Math.random() * 1000) + 1)+'REX'+Math.floor((Math.random() * 15000) + 1), // Replace with a reference you generated
+                    callback: function(response) {
+                        //this happens after the payment is completed successfully
+                        
+                        var reference = response.reference;
+                        alert('Payment complete! Reference: ' + reference);
+
+                        buyTicket();
+
+                        let ticketRef = ref(database, `userTickets/${currentUID}/${nextIndex}`);
+               
+                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Completed','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
+                        set(ticketRef, ticketObj);
+
+
+                        let priceRef = ref(database, "prices/"+n)
+                        set(proceRef, totalTicketPrice)
+                    // Make an AJAX call to your server with the reference to verify the transaction
+                    },
+                    onClose: function() {
+
+                        buyTicket();
+                        let ticketRef = ref(database, `userTickets/${currentUID}/${nextIndex}`);
+               
+                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Awaiting Payment','paymentReference': '', 'book': date, 'cost': totalTicketPrice};
+                        set(ticketRef, ticketObj);
+
+                    alert('Transaction was not completed, window closed.');
+                    },
+                });
+                handler.openIframe();
             }
 
 

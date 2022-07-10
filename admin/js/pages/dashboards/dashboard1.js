@@ -1,16 +1,7 @@
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: js
-*/
+
 $(function () {
     "use strict";
-    // ============================================================== 
-    // Newsletter
-    // ============================================================== 
-
-    //ct-visits
+   
     new Chartist.Line('#ct-visits', {
         labels: ['2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015'],
         series: [
@@ -27,7 +18,7 @@ $(function () {
         ],
         axisY: {
             labelInterpolationFnc: function (value) {
-                return (value / 1) + 'k';
+                return (value * 10) + 'k';
             }
         },
         showArea: true

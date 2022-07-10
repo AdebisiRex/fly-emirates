@@ -331,15 +331,15 @@
 
             let dbRef = ref(database, "userData");
             let userArray;
-            let nextIndex;
+            let nextUserIndex;
 
             onValue(dbRef, function(snapshot){
                 userArray = snapshot.val();
                 if(userArray){
-                    nextIndex = userArray.length;
+                    nextUserIndex = userArray.length;
                 }
                 else{
-                    nextIndex = 0;
+                    nextUserIndex = 0;
                 }
                 
                 console.log(userArray)
@@ -349,24 +349,22 @@
             window.createAccount=()=> {
 
                 
-                let userId = eMail.value;
+                let userEmail = eMail.value;
                 let addTime = new Date().toLocaleTimeString();
                 let password = passW.value;
                 const database = getDatabase();
                 
 
-                let userObj = {"name":{'title': title.value, firstName: fName.value, lastName: lName.value}, "email": eMail.value, "dateOfBirth": dob.value, "language": lang.value, "mobileNumber": mNumber.value, "registeredTime": addTime}
-                
-                
-
-                createUserWithEmailAndPassword(auth, userId, password).then((credential)=>{
+                createUserWithEmailAndPassword(auth, userEmail, password).then((credential)=>{
                 // console.log(credential, 'cred');
                 // console.log(credential.user, 'user');
                 // console.log(credential.user.uid, 'userID');
                 // console.log(userObj)
                 let userUID = credential.user.uid; 
+                let userObj = {"name":{'title': title.value, "firstName": fName.value, "lastName": lName.value}, "uid":userUID,"email": eMail.value, "dateOfBirth": dob.value, "language": lang.value, "mobileNumber": mNumber.value, "registeredTime": addTime}
+                
 
-                let userRef = ref(database, `userData/${userUID}`);
+                let userRef = ref(database, `userData/${nextUserIndex}`);
                 set(userRef, userObj);
                 
                 location.href = 'login.html'

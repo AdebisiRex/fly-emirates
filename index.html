@@ -171,45 +171,75 @@
                         <div class="row my-3 pb-4">
                                 
                             <div class="col-5">
-                                <select onclick="listDAirp()" class="sh-hover p-3 input" name="" id="depAirpoty"></select>
+                                <label for="depAirport"> Departure Airport</label>
+                                <select  class="sh-hover p-3 form-control" name="" id="depAirport"></select>
                                 
                                 
                             </div>
                             <div class="col-5">
-                                <select onclick="listArrivalAirp()" class="sh-hover p-3 input" name="" id="arriveAirpoty"></select>
+                                <label for="arrAirport"> Arrival  Airport</label>
+                                <select class="sh-hover p-3 form-control" name="" id="arrAirport"></select>
                             </div>
                             <div class="col-2">
+                                <label for="">_</label>
                                 <button onclick="searchContinue()" class="sh-hover btn button100 btn-danger fw-bold  sh-hover ">Continue</button>
                             </div>
                         </div>
                     </div>
                     <div id="afterContinue" class="my-5 pb-4  d-none"  >
-                            <div class="text-danger mb-1 text-end">
-                                <small > <ins> Advanced search: multi-city, promo codes, partner airlines  ></ins></small>
+                        <div class="text-danger mb-1 text-end">
+                            <small > <ins> Advanced search: multi-city, promo codes, partner airlines  ></ins></small>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md-4 col-12">
+                                <label for="depAirport">Departure Airport </label>
+                                <select class="sh-hover p-3 form-control custom-select" name="" id="depAirport">
+                                </select>
                             </div>
-                            <div class="row g-3">
-                                <div class="col-4">
-                                    <select class="sh-hover p-3 input" name="" id="depAirpot"></select>
-                                </div>
-                                <div class="col-4">
-                                    <select onclick="listDAirp()" class="sh-hover p-3 input" name="" id="arriveAirpot"></select>
-                                </div>
-                                <div class="col-4">
-                                    <input class="sh-hover p-3 input" type="text" placeholder="Departing - Returning" id="arrive">
+                            <div class="col-md-4 col-12">
+                                <label for="arrAirport">Arrival Airport </label>
+                                <select class="sh-hover p-3 form-control" name="" id="arrAirport"></select>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label for="depDate">Departure Date </label>
+                                <input class=" form-control sh-hover p-3" type="date"  id="depDate">
+                                    
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label for="arrDate">Arrival Date </label>
+                                <input class="form-control sh-hover p-3" type="date"  id="arrDate">
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label for="nOPass">Number of Passengers</label>
+                                <div class="row g-1">
+                                    <div class="col-4">
+                                        <input class="sh-hover p-3 form-control" type="number" placeholder="Adult" min="0" max="15" id="adult">       
 
-                                </div>
-                                <div class="col-4">
-                                    <input class="sh-hover p-3 input" type="text" placeholder="Passenger" id="arrive">
-                                </div>
-                                <div class="col-4">
-                                    <input class="sh-hover p-3 input" type="text" placeholder="Class" id="arrive">
-                                </div>
-                                <div class="col-4">
-                                    <button class="sh-hover btn button100 btn-danger fw-bold px-5 p-2 sh-hover ">Search Flights</button>
-                                    <i class="fa fa-percent" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="sh-hover p-3 form-control" type="number" placeholder="Children" min="0" max="7" id="children">       
+
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="sh-hover p-3 form-control" type="number" placeholder="Toddler" min="0" max="3" id="toddler">       
+
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-4 col-12">
+                                <label for="coach">Class </label>
+                                <select class="sh-hover p-3 form-control custom-select" id="coach">
+                                    <option  value="Economy Class">Economy Class</option>
+                                    <option value="Business Class">Business Class</option>
+                                    <option value="First Class">First Class</option>
 
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-12 my-3">
+                                <a href="login.html"><button data-bs-toggle="modal" data-bs-target="#confirmModal"  class="sh-hover btn button100 btn-danger fw-bold px-5 p-2 sh-hover ">Book Flight</button></a>
+                                
+                            </div>
+                        </div>
                     </div>
                     
 

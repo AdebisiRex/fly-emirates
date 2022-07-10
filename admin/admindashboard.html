@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <title>Admin Dashboard || Fly Emirates </title>
+    <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/svg" sizes="16x16" href="images\emirates-logo-badge.svg">
+    <!-- Custom CSS -->
+    <link href="plugins/bower_components/chartist/dist/chartist.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css">
+    <!-- Custom CSS -->
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+    
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+        data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+        
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header bg-danger" data-logobg="skin6">
+                    
+                    <a class="navbar-brand" href="dashboard.html">
+                        
+                        <span class="logo-text">
+                            
+                            <img src="images\emirates-logo-horizontal.svg" width="150px" />
+                        </span>
+                    </a>
+                    
+                    <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+                        href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                </div>
+              
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                   
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav ms-auto d-flex align-items-center">
+
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class=" in">
+                            <form role="search" class="app-search d-none d-md-block me-3">
+                                <input type="text" placeholder="Search..." class="form-control mt-0">
+                                <a href="" class="active">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </form>
+                        </li>
+                        
+                        <li>
+                            <a class="profile-pic" href="#">
+                                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+                                    class="img-circle"><span class="text-white font-medium">Admin</span></a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </nav>
+        </header>
+       
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <!-- User Profile-->
+                        <li class="sidebar-item pt-2">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="admindashboard.html"
+                                aria-expanded="false">
+                                <i class="far fa-clock" aria-hidden="true"></i>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+                        
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="tickets.html"
+                                aria-expanded="false">
+                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <span class="hide-menu">Tickets</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="page-breadcrumb bg-white">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Dashboard</h4>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="container-fluid">
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Total Visit</h3>
+                            <ul class="list-inline two-part d-flex align-items-center mb-0">
+                                <li>
+                                    <div id="sparklinedash"><canvas width="67" height="30"
+                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
+                                    </div>
+                                </li>
+                                <li class="ms-auto"><span class="counter text-success">659</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Total Page Views</h3>
+                            <ul class="list-inline two-part d-flex align-items-center mb-0">
+                                <li>
+                                    <div id="sparklinedash2"><canvas width="67" height="30"
+                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
+                                    </div>
+                                </li>
+                                <li class="ms-auto"><span class="counter text-purple">869</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Unique Visitor</h3>
+                            <ul class="list-inline two-part d-flex align-items-center mb-0">
+                                <li>
+                                    <div id="sparklinedash3"><canvas width="67" height="30"
+                                            style="display: inline-block; width: 67px; height: 30px; vertical-align: top;"></canvas>
+                                    </div>
+                                </li>
+                                <li class="ms-auto"><span class="counter text-info">911</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="white-box">
+                            <h3 class="box-title">Amounts Paid Daily</h3>
+                            
+                            <div id="ct-visits" style="height: 405px;">
+                                <canvas id="amountsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <div class="d-md-flex mb-3">
+                                <h3 class="box-title mb-0">All Registered Users</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover no-wrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">#</th>
+                                            <th class="border-top-0">Name</th>
+                                            <th class="border-top-0">Email</th>
+                                            <th class="border-top-0">Phone Number</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userIteration">
+                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCtrbjCDy4Mn0pcdE3HpCN1xLchtO-7rqU",
+          authDomain: "fly-emirate.firebaseapp.com",
+          projectId: "fly-emirate",
+          storageBucket: "fly-emirate.appspot.com",
+          messagingSenderId: "740483655605",
+          appId: "1:740483655605:web:46bcffb031cd2b6affdbfc"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+               
+
+        //database
+        const database = getDatabase();
+  
+
+
+        let dbRef = ref(database, "userData");
+        let userArray;
+        let display;
+
+        onValue(dbRef, function(snapshot){
+            userArray = snapshot.val();
+            displayUsers(userArray)
+        })
+        
+        function displayUsers(userArray){
+            userArray.map((user, i) =>{
+                display = `<tr> <td> ${i +1}</td> <td> ${user.name.title} ${user.name.firstName} ${user.name.lastName}</td><td> ${user.email}</td><td> ${user.mobileNumber}</td> `
+
+            })
+            userIteration.innerHTML = display;
+        }
+
+        let priceRef= ref(database,"prices");
+        let priceArray;
+       
+        onValue(priceRef, (snapPrice) =>{
+            priceArray = snapPrice.val();
+            console.log(priceArray)
+            const thisPrices = Promise.resolve(priceArray)
+            thisPrices.then(value=>{
+                const labels = [
+                'Day 1',
+                'Day 2',
+                'Day 3',
+                'Day 4',
+                'Day 5',
+                'Day 6',
+                ];
+
+                const data = {
+                labels: labels,
+                datasets: [{
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [...value],
+                }]
+                };
+
+                const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    animations: {
+                    radius: {
+                        duration: 400,
+                        easing: 'linear',
+                        loop: (context) => context.active
+                    }
+                    },
+                    hoverRadius: 4,
+                    hoverBackgroundColor: 'yellow',
+                    interaction: {
+                    mode: 'nearest',
+                    intersect: false,
+                    axis: 'x'
+                    },
+                    plugins: {
+                    tooltip: {
+                        enabled: false
+                    }
+                    }
+                },
+                };
+
+
+                const myChart = new Chart(document.getElementById('amountsChart'),config);
+
+            })
+        })
+        
+        
+            
+        
+
+
+        
+
+        
+
+    $(function () {
+        "use strict";
+        
+        var chart = [chart];
+
+        var sparklineLogin = function () {
+            $('#sparklinedash').sparkline([0, 5, 6, 10, 9, 12, 4, 9], {
+                type: 'bar',
+                height: '30',
+                barWidth: '4',
+                resize: true,
+                barSpacing: '5',
+                barColor: '#7ace4c'
+            });
+            $('#sparklinedash2').sparkline([0, 5, 6, 10, 9, 12, 4, 9], {
+                type: 'bar',
+                height: '30',
+                barWidth: '4',
+                resize: true,
+                barSpacing: '5',
+                barColor: '#7460ee'
+            });
+            $('#sparklinedash3').sparkline([0, 5, 6, 10, 9, 12, 4, 9], {
+                type: 'bar',
+                height: '30',
+                barWidth: '4',
+                resize: true,
+                barSpacing: '5',
+                barColor: '#11a0f8'
+            });
+            $('#sparklinedash4').sparkline([0, 5, 6, 10, 9, 12, 4, 9], {
+                type: 'bar',
+                height: '30',
+                barWidth: '4',
+                resize: true,
+                barSpacing: '5',
+                barColor: '#f33155'
+            });
+        }
+        var sparkResize;
+        $(window).on("resize", function (e) {
+            clearTimeout(sparkResize);
+            sparkResize = setTimeout(sparklineLogin, 500);
+        });
+        sparklineLogin();
+    })
+        
+            
+
+        
+
+        
+
+    </script>
+    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app-style-switcher.js"></script>
+    <script src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <!--Wave Effects -->
+    <script src="js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="js/custom.js"></script>
+    <!--This page JavaScript -->
+    <!--chartis chart-->
+    <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
+    <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+    <!-- <script src="js/pages/dashboards/dashboard1.js"></script> -->
+
+
+
+</body>
+
+</html>

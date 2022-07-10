@@ -239,7 +239,8 @@
                                   
                                 </div>
                                 <div class="modal-footer">
-                                  <button onclick="payWithPaystack()" id="saveChanges" class="btn btn-dark" data-bs-dismiss="modal">Proceed to Payment</button>
+                                  <button onclick="payWithPaystack()" id="saveChanges" class="btn btn-success bg-gradient" data-bs-dismiss="modal">Proceed to Payment</button>
+                                  <button onclick="buyTicketFailed()" class="btn btn-dark" data-bs-dismiss="modal">Pay Later</button>
                                   
                                 </div>
                               </div>
@@ -569,20 +570,22 @@
 
             //database
 
-            let dbRef = ref(database, "userData");
+            let userDataRef = ref(database, "userData");
             let userArray = [];
             let thisUserArray;
 
-            onValue(dbRef, function(snapshot){
+            onValue(userDataRef, function(snapshot){
                 userArray = snapshot.val();
-                    thisUserArray =  userArray[`${currentUID}`];
+                    thisUserArray =  userArray.find(value =>value.uid = currentUID
+                    )
+                    // thisUserArray =  userArray[`${currentUID}`];
                     // console.log(thisUserArray, 'thisuser');
                     thisUserEmail.innerText = thisUserArray.email;
                     fullName.innerText = `${thisUserArray.name.firstName} ${thisUserArray.name.lastName}`;
                
             })
             
-
+            let reference;
             //code for tickets
             let ticketsArray;
             let nextIndex;
@@ -590,11 +593,13 @@
             let userTicketsDB = ref(database, 'userTickets');
             onValue(userTicketsDB, function(snapshot){
                 ticketsArray = snapshot.val();
-                console.log(ticketsArray, "ticketsArray")
-                if(ticketsArray[`${currentUID}`]){
-                    currentUserTickets = ticketsArray[`${currentUID}`]
-                    console.log(currentUserTickets, 'currentUserTickets');
-                    nextIndex = currentUserTickets.length;
+
+                if(ticketsArray){
+                    
+                    currentUserTickets = ticketsArray.filter((myTicket)=>myTicket.uid == currentUID)
+                    console.log(ticketsArray, "ticketsArray")
+                    nextIndex = ticketsArray.length;
+                    // console.log(nextIndex, "nextIndex")
                     displayTickets(currentUserTickets);
                 }else{
                     nextIndex= 0;
@@ -602,15 +607,17 @@
 
             })
 
-            let n;
+
+            // prices for chart
+            let priceIndex;
             let prices;
             let priceREF = ref(database, 'prices')
             onValue(priceREF, function(snapshot){
                 prices = snapshot.val();
                 if(prices){
-                    n = prices.length;
+                    priceIndex = prices.length;
                 }else{
-                    n = 0  
+                    priceIndex = 0  
                 }
             })
 
@@ -619,13 +626,14 @@
             let noToddler;
             let numberOfPassenger;
             let totalTicketPrice;
+            let date = new Date().toLocaleDateString();
+            let detailIndex;
            
-            function buyTicket(){
+            function buyTicketSuccess(){
                 noAdult = Number(adult.value);
                 noChildren = Number(children.value);
                 noToddler = Number(toddler.value)
                 numberOfPassenger = noAdult + noChildren + noToddler;
-                let date = new Date().toLocaleDateString();
                 
 
                 if(coach.value == 'First Class'){
@@ -639,8 +647,87 @@
 
                 }
 
-            }
 
+                let ticketRef = ref(database, `userTickets/${nextIndex}`);
+               
+                let ticketObj = {'uid':currentUID,'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Completed','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
+                        
+                set(ticketRef, ticketObj);
+
+
+                let priceRef = ref(database, "prices/"+priceIndex)
+                set(priceRef, totalTicketPrice)
+              
+
+            }
+            function buyTicketLater(){
+
+              
+
+
+                noAdult = Number(adult.value);
+                noChildren = Number(children.value);
+                noToddler = Number(toddler.value)
+                numberOfPassenger = noAdult + noChildren + noToddler;
+                
+
+                if(coach.value == 'First Class'){
+
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 3;
+                }else if(coach.value == 'Business Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 2;
+
+                }else if(coach.value == 'Economy Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500));
+
+                }
+
+
+                let laterTicketRef = ref(database, `userTickets/${detailIndex}`);
+               
+                let ticketObj = {'uid': currentUID, 'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Completed','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
+                set(laterTicketRef, ticketObj);
+
+
+                let priceRef = ref(database, "prices/"+priceIndex)
+                set(priceRef, totalTicketPrice)
+                
+                
+            }
+            window.buyTicketFailed=()=>{
+            
+            
+            
+            
+                noAdult = Number(adult.value);
+                noChildren = Number(children.value);
+                noToddler = Number(toddler.value)
+                numberOfPassenger = noAdult + noChildren + noToddler;
+                
+
+                if(coach.value == 'First Class'){
+
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 3;
+                }else if(coach.value == 'Business Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500)) * 2;
+
+                }else if(coach.value == 'Economy Class'){
+                    totalTicketPrice = ((noAdult * 1000) + (noChildren * 650) + (noToddler * 500));
+
+                }
+
+
+                let ticketRef = ref(database, `userTickets/${nextIndex}`);
+               
+                let ticketObj = {'uid': currentUID, 'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Awaiting Payment','paymentReference': "Pay to get a reference", 'book': date, 'cost': totalTicketPrice};
+                set(ticketRef, ticketObj);
+
+
+                let priceRef = ref(database, "prices/"+priceIndex)
+                set(priceRef, totalTicketPrice)
+              
+
+            }
 
 
             window.ticket=()=>{
@@ -665,7 +752,6 @@
 
                 document.getElementById('ticketPrice').innerHTML = `<i class="fa fa-dollar" aria-hidden="true"></i>${totalTicketPrice}`;
             
-                buyTicket()
             }
                 
             function displayTickets(currentUserTickets){
@@ -673,31 +759,45 @@
                                 <thead>
                                     <tr> <th> Departure </th> <th> Destination</th> <th> Departure Date</th><th> Approval Status</th><th><img src="images/bin.png" width="20"></th> </tr></thead><tbody>    `;
                 currentUserTickets.map((ticket, i)=>{
-                    display += `<tr data-bs-toggle="modal" data-bs-target="#detModal" onclick = "moreDetails(${i})"><td> ${ticket.from}</td><td>${ticket.to}</td><td>${ticket.departureDate}</td><td> <i> pending...</i></td><td onclick = 'deleteTicket(${i})'><img src="images/bin.png" width="20"></td></tr>`
+                    if(ticket.approval){
+                        status = 'Approved'
+                    }else{
+                        status = 'Awaiting Approval'
+                    }
+                    display += `<tr data-bs-toggle="modal" data-bs-target="#detModal" onclick = "moreDetails(${i})"><td> ${ticket.from}</td><td>${ticket.to}</td><td>${ticket.departureDate}</td><td> ${status}</td><td onclick = 'deleteTicket(${i})'><img src="images/bin.png" width="20"></td></tr>`;
+
                 })
                 display += `</tbody></table>`;
                 ticketsDisplay.innerHTML  = display;
+
+                
             }
            
             window.deleteTicket=(index)=>{
-                currentUserTickets.splice(index,1)
-                let ticketRef = ref(database, `userTickets/${currentUID}`);
-                
-                set(ticketRef, currentUserTickets)
+                a = ticketsArray.findIndex((item) => {
+                    item = currentUserTickets[index]
+                })
+
+                ticketsArray.splice(a,1);
+
+                let ticketRef = ref(database, `userTickets`);
+                set(ticketRef, ticketsArray)
             }
 
-            let detailIndex;
+            let thisTicketCost;
             window.moreDetails=(d)=>{
                 let det = currentUserTickets[d];
                 detailIndex = d;
-
-                document.getElementById('bookingDetails').innerHTML =  `<table class= "table table-responsive">
+                thisTicketCost = det.cost
+                console.log(d, 'detailindex')
+                let tableDisplay =  `<table class= "table table-responsive">
                     <tr><td> Departure Airport:</td><td> ${det.from} </td></tr>
                     <tr><td> Arrival Airport:</td><td> ${det.to} </td></tr>
                     <tr><td> Class:</td><td> ${det.coach} </td></tr>
                     <tr><td> Book:</td><td> ${det.book} </td></tr>
-                    <tr><td> Arrival Date:</td><td> ${det.paymentStatus} </td></tr>
-                    <tr><td> Arrival Date:</td><td> ${det.paymentReference} </td></tr>
+                    
+                    <tr><td> Payment Reference:</td><td> ${det.paymentReference} </td></tr>
+                    <tr><td> Payment Reference:</td><td> ${det.paymentStatus} </td></tr>
                     <tr><td> Approval Status:</td><td> ${det.approval} </td></tr>
                     <tr><td> Cost:</td><td> ${ det.cost } </td></tr>
                     <tr><td> Passengers: (${det.passengers.total})</td><td> Adult: ${det.passengers.adult} Children: ${det.passengers.children} Toddler: ${det.passengers.toddler} </td></tr>
@@ -708,6 +808,8 @@
                 if(det.paymentStatus == "Awaiting Payment"){
                     document.getElementById('bookingFooter').innerHTML = `<button onclick="prebookedTicketPaystack()" class="btn btn-danger">Proceed To Pay </button><button class="btn btn-dark" data-bs-dismiss="modal">Dismiss</button>`
                 }
+
+                document.getElementById('bookingDetails').innerHTML  = tableDisplay;
             }
 
 
@@ -736,34 +838,21 @@
                 var handler = PaystackPop.setup({
                     key: 'pk_test_81338c74c32ab94adecbb258dc43be07f645286c', // Replace with your public key
                     email: currentEmail,
-                    amount: totalTicketPrice * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                    amount: thisTicketCost * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
                     currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
                     ref: `FLY`+ Math.floor((Math.random() * 1000) + 1)+'REX'+Math.floor((Math.random() * 15000) + 1), // Replace with a reference you generated
                     callback: function(response) {
                         //this happens after the payment is completed successfully
                         
                         var reference = response.reference;
+                        buyTicketLater();
                         alert('Payment complete! Reference: ' + reference);
 
-                        buyTicket();
 
-                        let ticketRef = ref(database, `userTickets/${currentUID}/${detailIndex}`);
-               
-                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Completed','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
-                        set(ticketRef, ticketObj);
-
-
-                        let priceRef = ref(database, "prices/"+n)
-                        set(proceRef, totalTicketPrice)
+                        
                     // Make an AJAX call to your server with the reference to verify the transaction
                     },
-                    onClose: function() {
-
-                        buyTicket();
-                        let ticketRef = ref(database, `userTickets/${currentUID}/${detailIndex}`);
-               
-                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Awaiting Payment','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
-                        set(ticketRef, ticketObj);
+                    onClose: function() {                       
 
                     alert('Transaction was not completed, window closed.');
                     },
@@ -776,38 +865,26 @@
             window.payWithPaystack=()=> {
                 
                 var handler = PaystackPop.setup({
-                    key: 'pk_test_81338c74c32ab94adecbb258dc43be07f645286c', // Replace with your public key
+                    key: 'pk_test_81338c74c32ab94adecbb258dc43be07f645286c', 
                     email: currentEmail,
                     amount: totalTicketPrice * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
                     currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
                     ref: `FLY`+ Math.floor((Math.random() * 1000) + 1)+'REX'+Math.floor((Math.random() * 15000) + 1), // Replace with a reference you generated
                     callback: function(response) {
-                        //this happens after the payment is completed successfully
                         
-                        var reference = response.reference;
+                        reference = response.reference;
+                        buyTicketSuccess();
                         alert('Payment complete! Reference: ' + reference);
 
-                        buyTicket();
 
-                        let ticketRef = ref(database, `userTickets/${currentUID}/${nextIndex}`);
-               
-                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Completed','paymentReference': reference, 'book': date, 'cost': totalTicketPrice};
-                        set(ticketRef, ticketObj);
+                       
 
-
-                        let priceRef = ref(database, "prices/"+n)
-                        set(proceRef, totalTicketPrice)
+                        
                     // Make an AJAX call to your server with the reference to verify the transaction
                     },
                     onClose: function() {
-
-                        buyTicket();
-                        let ticketRef = ref(database, `userTickets/${currentUID}/${nextIndex}`);
-               
-                        let ticketObj = {'from': depAirport.value, 'to':arrAirport.value, 'departureDate': depDate.value, 'arrivalDate': arrDate.value, 'coach': coach.value, 'passengers': {'adult': noAdult, 'children': noChildren, 'toddler': noToddler, 'total': numberOfPassenger},  'approval': false, 'paymentStatus': 'Awaiting Payment','paymentReference': '', 'book': date, 'cost': totalTicketPrice};
-                        set(ticketRef, ticketObj);
-
-                    alert('Transaction was not completed, window closed.');
+                        buyTicketFailed();
+                        alert('Transaction was not completed, window closed.');
                     },
                 });
                 handler.openIframe();
